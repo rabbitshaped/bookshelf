@@ -1,0 +1,177 @@
+<%- include("partials/header", { title: '' }) %>
+
+    <div class="container detail text-center">
+        <h1 class="title la-belle-aurore-regular">Edit Book</h1>
+
+        <div class="form">
+
+            <form action="/update/<%= book.id %>" method="POST">
+
+                <div class="form-top">
+
+                    <!-- LEFT -->
+                    <div class="form-left">
+
+                        <input name="title" value="<%= book.title %>" required>
+
+                        <input name="author" value="<%= book.author %>">
+
+                        <input name="isbn" value="<%= book.isbn %>">
+                        <input id="coverInput" name="cover_url" value="<%= book.cover_url %>">
+
+                        <div class="rating-row">
+                            <input type="hidden" name="rating" id="ratingInput" value="<%= book.rating || 0 %>">
+                            <span class="rating-label">Rating:</span>
+
+                            <div id="starPicker" class="stars">
+                                <span data-value="1">☆</span>
+                                <span data-value="2">☆</span>
+                                <span data-value="3">☆</span>
+                                <span data-value="4">☆</span>
+                                <span data-value="5">☆</span>
+                            </div>
+                            <span id="ratingValue" class="rating-value">(0/5)</span>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="form-right">
+
+                        <div class="cover-frame">
+                            <p class="placeholder-text">Cover preview</p>
+                            <img id="coverPreview">
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+                <textarea name="review"><%= book.review %></textarea>
+
+
+                <button class="nav-btn">Save Changes</button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        const input = document.getElementById("coverInput");
+        const preview = document.getElementById("coverPreview");
+
+        // 👉 INITIAL LOAD, show image if there is value
+        if (input.value) {
+            preview.src = input.value;
+            preview.classList.add("active");
+        }
+
+        input.addEventListener("input", () => {
+
+            if (input.value) {
+                preview.src = input.value;
+                preview.classList.add("active");
+            } else {
+                preview.classList.remove("active");
+            }
+
+        });
+        //FETCHING DATA 
+        async function fetchBook() {
+
+            const isbn = document.getElementById("isbnInput").value;
+
+            const response = await fetch(
+                `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`
+            );
+
+            const data = await response.json();
+
+            // if ISBN not found
+            if (!data.items) {
+                alert("Book not found");
+                return;
+            }
+            const book = data.items[0].volumeInfo;
+
+            document.getElementById("titleInput").value = book.title || "";
+            document.getElementById("authorInput").value = book.authors?.[0] || "";
+            document.getElementById("isbnInput").value = isbn;
+
+            if (book.imageLinks) {
+                const cover = book.imageLinks.thumbnail;
+
+                document.getElementById("coverInput").value = cover;
+                document.getElementById("coverPreview").src = cover;
+                document.getElementById("coverPreview").classList.add("active");
+            }
+
+        }
+
+        // STARS 
+
+        const stars = document.querySelectorAll("#starPicker span");
+        const ratingInput = document.getElementById("ratingInput");
+        const ratingValue = document.getElementById("ratingValue");
+
+        const existingRating = parseInt(ratingInput.value);
+
+        if (existingRating) {
+            ratingInput.value = existingRating;
+            ratingValue.textContent = `(${existingRating}/5)`;
+
+            for (let i = 0; i < existingRating; i++) {
+                stars[i].textContent = "★";
+                stars[i].classList.add("active");
+            }
+        }
+
+        let selectedRating = existingRating;
+
+        stars.forEach(star => {
+
+            star.addEventListener("mouseenter", () => {
+                const rating = star.dataset.value;
+
+                stars.forEach(s => s.textContent = "☆");
+
+                for (let i = 0; i < rating; i++) {
+                    stars[i].textContent = "★";
+                }
+            });
+
+            star.addEventListener("mouseleave", () => {
+                // restore selected rating
+                stars.forEach(s => s.textContent = "☆");
+
+                for (let i = 0; i < selectedRating; i++) {
+                    stars[i].textContent = "★";
+                }
+            });
+
+            star.addEventListener("click", () => {
+                selectedRating = star.dataset.value;
+
+                ratingInput.value = selectedRating;
+                ratingValue.textContent = `(${selectedRating}/5)`;
+
+                stars.forEach(s => s.classList.remove("active"));
+
+                for (let i = 0; i < selectedRating; i++) {
+                    stars[i].classList.add("active");
+                }
+            });
+
+        });
+
+    </script>
+    </div>
+    </body>
+
+    </html>

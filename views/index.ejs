@@ -1,0 +1,107 @@
+<%- include("partials/header", { title: "Ira's Bookshelf" }) %>
+    <!-- FULL HEADER BACKGROUND -->
+    <header class="site-header">
+        <!-- Centered title content -->
+        <div class="container text-center pt-4">
+            <h1 class="title la-belle-aurore-regular">Ira's Recent Reads</h1>
+            <h2 class="subtitle la-belle-aurore-regular">A rotating shelf of books I’ve finished recently.</h2>
+            <div class="container explanation">
+                <% if (!isDemo) { %>
+                    <div class="demo-banner">
+                        📖 Demo mode active — feel free to explore
+                    </div>
+                    <% } else { %>
+                        <p>Some of these were fascinating, some were strange, and a few were probably overhyped.
+                            These aren’t serious literary reviews — just quick impressions and notes so I remember what
+                            I thought.</p>
+                        <% } %>
+            </div>
+
+        </div>
+
+        <div class="header-divider"></div>
+    </header>
+    <!-- Full-width navbar -->
+    <!-- Navbar -->
+    <nav>
+        <div class="container d-flex justify-content-center pb-4">
+            <ul class="nav pond-tabs">
+                <li class="nav-item">
+                    <a class="nav-link nav-btn" href="/new">Add a Book</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active nav-btn" href="/?sort=recent">Most recent</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-btn" href="/?sort=title">Sort by Title</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-btn" href="/?sort=rating">Sort by Rating</a>
+                </li>
+            </ul>
+
+        </div>
+
+    </nav>
+
+    <div class="bookshelf">
+        <div class="book-list">
+
+            <% if (books.length===0) { %>
+                <p>No books yet. Add your first one 📚</p>
+                <% } %>
+
+                    <% books.forEach(book=> { %>
+
+                        <div class="book">
+                            <a class="card-link" href="/book/<%= book.id %>"></a>
+
+                            <img src="<%= book.cover_url %>">
+
+                            <h3>
+                                <%= book.title %>
+                            </h3>
+
+                            <p>
+                                <%= book.author %>
+                            </p>
+
+                            <p class="stars">
+                                <% for(let i=1; i <=5; i++) { %>
+                                    <% if(i <=book.rating) { %>
+                                        ★
+                                        <% } else { %>
+                                            ☆
+                                            <% } %>
+                                                <% } %>
+                            </p>
+
+                            <p class="review-preview">
+                                <%= book.review %>
+                            </p>
+
+                        </div>
+
+                        <% }) %>
+        </div>
+    </div>
+
+    <!-- // FOOTER -->
+    <footer class="footer site-footer mt-auto py-4">
+        <div class="container text-center">
+
+            <p class="made la-belle-aurore-regular">
+                Made with ♥ in Helsinki.
+            </p>
+
+            <p class="la-belle-aurore-regular">
+                © Ira Baraton
+                <% const today=new Date(); %>
+                    <%= today.getFullYear(); %>
+            </p>
+
+        </div>
+    </footer>
+    </body>
+
+    </html>
