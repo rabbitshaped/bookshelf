@@ -2,6 +2,10 @@
 
 A small web app to track and display recently read books — with a focus on clean UI and simple interactions. I originally considered building a karaoke list (and honestly, I probably would have finished it sooner), but books won in the end. Even if I don’t read as much as I’d like, in my heart of hearts, I really, ***deeply***, love books.
 
+
+https://github.com/user-attachments/assets/778124f8-2061-4cff-9e62-cbdc6990da2d
+
+
 ## ✨ Features
 
 * Interactive star rating system
