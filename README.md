@@ -34,7 +34,7 @@ This project is very open to iteration. Some ideas I’d like to explore:
 
 * Language tags (I enjoy reading across different languages)
 
-* Placeholder cover image when none is available
+* Placeholder “no cover” cover image when none is available or pasted in
 
 * Automatically hiding “cover preview” text when an image loads
 
@@ -56,8 +56,8 @@ This project is very open to iteration. Some ideas I’d like to explore:
 
 ## 🙏 Credits
 
-* Background pattern by [Pattern Monster](https://pattern.monster).
-* Book covers via [Google Books API](https://developers.google.com/books) (and additional sources where needed).
+* Background pattern by [Pattern Monster](https://pattern.monster)
+* Book covers via [Google Books API](https://developers.google.com/books) (and additional sources where needed)
 
 ## 💭 Final Thoughts
 
